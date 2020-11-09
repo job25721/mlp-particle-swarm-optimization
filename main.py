@@ -129,7 +129,7 @@ for c in range(10):
             p.updateNeuralNetwork()
         np.random.shuffle(train)
         printProgressBar(
-            t+1, t_max, prefix=f'evolutioning.. t={t+1} ,cross_validation : {c+1}', length=25)
+            t+1, t_max, prefix=f'evolutioning.. t={t+1} ,cross_validation : {c+1}', suffix=f'pbest = {np.min(wins)}', length=25)
     # cross validation
     best_validation = []
     for p in population:
