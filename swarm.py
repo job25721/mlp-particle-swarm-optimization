@@ -14,7 +14,7 @@ class Node:
         self.y = 0
 
     def initialWeight(self, n):
-        self.w = np.random.uniform(-0.5, 0.5, size=n).reshape(n, 1)
+        self.w = np.random.uniform(-10, 10, size=n).reshape(n, 1)
         # self.b = np.random.uniform(-1, 1)
 
     def addInput(self, inputVector):
@@ -73,8 +73,8 @@ class Model:
                     self.x.append(w)
 
         self.x = np.array(self.x)
-        self.v = np.array([np.random.uniform(-0.5, 0.5)
-                           for i in range(len(self.x))]).reshape(len(self.x), 1)
+        self.v = np.random.uniform(-0.5, 0.5,
+                                   size=len(self.x)).reshape(len(self.x), 1)
 
     def updateNeuralNetwork(self):
         count = 0

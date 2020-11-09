@@ -28,20 +28,20 @@ def cross_validation_split(cross_validate_num, dataset):
     cross_len = int(round((len(dataset) * cross_validate_num), 0))
     block = []
     random_set = []
-    remainder_set = []
+    reminder_set = []
     for i in range(10):
-        rand = np.random.randint(0, 9)
+        rand = np.random.randint(0, 10)
         while random_set.__contains__(rand):
             rand = np.random.randint(0, 10)
         random_set.append(rand)
         block.append(dataset[i * cross_len:cross_len + (i * cross_len)])
         if i == 9 and sum([len(b) for b in block]) < len(dataset):
-            remainder_set = dataset[cross_len +
-                                    (i * cross_len):len(dataset)]
+            reminder_set = dataset[cross_len +
+                                   (i * cross_len):len(dataset)]
     return {
         "data_block": block,
         "rand_set": random_set,
-        "rem_set": remainder_set
+        "rem_set": reminder_set
     }
 
 

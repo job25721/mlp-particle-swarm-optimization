@@ -101,11 +101,11 @@ t_max = 25
 cross_data = cross_validation_split(cross_validate_num=0.1, dataset=data)
 block = cross_data["data_block"]
 rand_set = cross_data["rand_set"]
-remiander_set = cross_data["rem_set"]
+reminder_set = cross_data["rem_set"]
 
 cross_validation_plot = []
 for c in range(10):
-    res = select_validate(block, rand_set, c, remiander_set)
+    res = select_validate(block, rand_set, c, reminder_set)
     train = res["train"]
     cross_valid = res["cross_valid"]
     wins = []
@@ -114,14 +114,12 @@ for c in range(10):
     tic = time.perf_counter()
     for t in range(t_max):
         for i, p in enumerate(population):
-            if t > 0:
+            if t > 0 or c > 1:
                 p.updateNeuralNetwork()
             fx = p.evaluate(train)  # evaluate performance
             if fx < p.pbest:
                 p.pbest = fx
                 p.xpbest = p.x
-
-            if t == t_max - 1:
                 wins.append(p.pbest)
 
             # velocity calc
