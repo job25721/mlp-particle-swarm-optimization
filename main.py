@@ -127,7 +127,7 @@ for c in range(10):
             p.x = p.x + v_new
             # update weight with new position xi
             p.updateNeuralNetwork()
-
+        np.random.shuffle(train)
         printProgressBar(
             t+1, t_max, prefix=f'evolutioning.. t={t+1} ,cross_validation : {c+1}', length=25)
     # cross validation
