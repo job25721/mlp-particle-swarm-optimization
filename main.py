@@ -114,8 +114,6 @@ for c in range(10):
     tic = time.perf_counter()
     for t in range(t_max):
         for i, p in enumerate(population):
-            if t > 0 or c > 1:
-                p.updateNeuralNetwork()
             fx = p.evaluate(train)  # evaluate performance
             if fx < p.pbest:
                 p.pbest = fx
@@ -127,6 +125,8 @@ for c in range(10):
             p.v = v_new
             # update position
             p.x = p.x + v_new
+            # update weight with new position xi
+            p.updateNeuralNetwork()
 
         printProgressBar(
             t+1, t_max, prefix=f'evolutioning.. t={t+1} ,cross_validation : {c+1}', length=25)
