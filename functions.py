@@ -22,6 +22,7 @@ def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=
     # Print New Line on Complete
     if iteration == total:
         print()
+    
 
 
 def cross_validation_split(cross_validate_num, dataset):

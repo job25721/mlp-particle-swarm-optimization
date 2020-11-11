@@ -89,7 +89,7 @@ class Model:
                     count = count+1
 
     def evaluate(self, data):
-        predict = 120
+        predict = 240
         MAE = []
         for n, train in enumerate(data):
             if n + predict <= len(data) - 1:
