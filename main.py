@@ -75,21 +75,21 @@ def clear(): return os.system('clear')
 
 data = preprocessData()
 
-particle_n = 10
-population = []
 
-print("building..")
-for p in range(particle_n):
-    inputLayer = buildLayer(node=8)
-    hiddenLayers = [buildLayer(node=4)
-                    for i in range(2)]
-    outputLayer = buildLayer(node=1)
-    print(f'p : {p}', end=" ")
-    particle = Model()
-    particle.create(inputLayer, hiddenLayers, outputLayer)
-    print(
-        f'shape :{len(particle.inputLayer)} - {[len(l) for l in particle.hiddenLayers]} - {len(particle.outputLayer)}')
-    population.append(particle)
+def initPopulation(n):
+    population = []
+    print("initing...")
+    for p in range(n):
+        inputLayer = buildLayer(node=8)
+        hiddenLayers = [buildLayer(node=4), buildLayer(node=3)]
+        outputLayer = buildLayer(node=1)
+        print(f'p : {p}', end=" ")
+        particle = Model()
+        particle.create(inputLayer, hiddenLayers, outputLayer)
+        print(
+            f'shape :{len(particle.inputLayer)} - {[len(l) for l in particle.hiddenLayers]} - {len(particle.outputLayer)}')
+        population.append(particle)
+    return population
 
 
 time.sleep(3)
@@ -102,22 +102,27 @@ def velocity_vector(xpbest, xi, vi):
 
 print('training..')
 t_max = 25
+particle_n = 10
 
 cross_data = cross_validation_split(cross_validate_num=0.1, dataset=data)
 block = cross_data["data_block"]
 rand_set = cross_data["rand_set"]
 reminder_set = cross_data["rem_set"]
 
+population = initPopulation(particle_n)
+first_population = population
 cross_validation_plot = []
 wins = []
 for c in range(10):
     res = select_validate(block, rand_set, c, reminder_set)
     train = res["train"]
     cross_valid = res["cross_valid"]
+    population = first_population
     printProgressBar(
         0, t_max, prefix=f'evolutioning.. t={1} ,cross_validation : {c+1}', length=25)
     tic = time.perf_counter()
     for t in range(t_max):
+
         printProgressBar(0, len(population), prefix='evaluating...', length=25)
         for i, p in enumerate(population):
             fx = p.evaluate(train)  # evaluate performance
@@ -136,7 +141,7 @@ for c in range(10):
             printProgressBar(i+1, len(population),
                              prefix='evaluating...', suffix=f'p({i+1})fx = {fx} pbest : {p.pbest}', length=25)
         clear()
-        printProgressBar(c, 10, prefix=f'overall process : cross validation : {c+1}',
+        printProgressBar(c, 10, prefix=f'overall process : cross validation : {c+1} crossValidation : {cross_validation_plot}',
                          length=50, printEnd='\n')
         np.random.shuffle(train)
         printProgressBar(
@@ -159,7 +164,7 @@ for c in range(10):
     else:
         print(f"total execution time {toc - tic:0.4f} secs\n")
 
-    printProgressBar(c+1, 10, prefix=f'overall process : cross validation : {c+1}',
+    printProgressBar(c+1, 10, prefix=f'overall process : cross validation : {c+1} crossValidation : {cross_validation_plot}',
                      length=50, printEnd='\n')
 
 plt.plot(cross_validation_plot)
